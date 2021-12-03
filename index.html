@@ -27,7 +27,7 @@ const svg = d3.select("#my_dataviz")
   .append("g")
     .attr("transform", `translate(${width/2+margin.left}, ${height/2+margin.top})`);
 
-d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/multiple_regression.csv").then( function(data) {
+d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_regression.csv").then( function(data) {
 
   const colourScale = d3.scaleOrdinal()
                         .domain(data, d => d.category)
@@ -67,7 +67,7 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/multiple
       .attr("fill", d =>colourScale(d.category))
       .attr("d", d3.arc()     // imagine your doing a part of a donut plot
           .innerRadius(innerRadius)
-          .outerRadius(d => y(d['multiple_regression'])+2)
+          .outerRadius(d => y(d['single_regression'])+2)
           .startAngle(d => x(d.variable_name))
           .endAngle(d => x(d.variable_name) + x.bandwidth())
           .padAngle(0.01)
@@ -106,7 +106,7 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/multiple
                         .style("top", event.pageY + "px")
                     .select("#value")
                         // .html("<p>" + String(d[1]) + "</p>"); // access data by indexing array value
-                        .html("<p>" + String(d.multiple_regression) + "</p>"); // access data by object property
+                        .html("<p>" + String(d.single_regression) + "</p>"); // access data by object property
 
                 d3.select("#tooltip")
                     .classed("hidden", false);
