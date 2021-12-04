@@ -15,8 +15,8 @@
 
 // set the dimensions and margins of the graph
 const margin = {top: 100, right: 150, bottom: 0, left: 150},
-    width = 860 - margin.left - margin.right,
-    height = 860 - margin.top - margin.bottom,
+    width = 750 - margin.left - margin.right,
+    height = 750 - margin.top - margin.bottom,
     innerRadius = 90,
     outerRadius = Math.min(width, height) / 2;   // the outerRadius goes from the middle of the SVG area to the border
 
@@ -120,7 +120,7 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
       .data(data)
       .join("g")
         .attr("text-anchor", function(d) { return (x(d.variable_name) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "end" : "start"; })
-        .attr("transform", function(d) { return "rotate(" + ((x(d.variable_name) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (285) + ",0)"; })
+        .attr("transform", function(d) { return "rotate(" + ((x(d.variable_name) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")"+"translate(" + (240) + ",0)"; })
       .append("text")
         .text(function(d){return(d.variable_name)})
         .attr("transform", function(d) { return (x(d.variable_name) + x.bandwidth() / 2 + Math.PI) % (2 * Math.PI) < Math.PI ? "rotate(180)" : "rotate(0)"; })
