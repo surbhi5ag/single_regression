@@ -4,6 +4,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v7.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -27,11 +28,13 @@ const svg = d3.select("#my_dataviz")
   .append("g")
     .attr("transform", `translate(${width/2+margin.left}, ${height/2+margin.top})`);
 
+//read data
 d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_regression.csv").then( function(data) {
 
+//add colour Scales
   const colourScale = d3.scaleOrdinal()
                         .domain(data, d => d.category)
-                        .range(["#90278e", "#0087a4", "yellow", "#d6de23", "grey", "#ffdd00", "#fbb615", "#f6921e", "#ec1c24", "#eb008b"])
+                        .range(["#ffdd00", "#fbb615", "#f6921e", "#ec1c24", "#eb008b", "#90278e", "#0087a4", "#d6de23"])
 
   // Scales
   const x = d3.scaleBand()
@@ -44,7 +47,7 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
 
 //add circles
       var yAxis = svg.append("g")
-          .attr("text-anchor", "end");
+          .attr("text-anchor", "middle");
 
       var yTick = yAxis
                 .selectAll("g")
@@ -57,6 +60,41 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
                   .attr("stroke", "#000")
                   .attr("opacity", 0.2)
                   .attr("r", y);
+
+    // create a tooltip
+                    var Tooltip = d3.select("#div_template")
+                      .append("div")
+                      .style("opacity", 0)
+                      .attr("class", "tooltip")
+                      .style("background-color", "white")
+                      .style("border", "solid")
+                      .style("border-width", "2px")
+                      .style("border-radius", "5px")
+                      .style("padding", "5px")
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+                      var mouseover = function(d) {
+                        Tooltip
+                          .style("opacity", 1)
+                        d3.select(this)
+                          .style("stroke", "black")
+                          .style("opacity", 1)
+                          .html("The exact value of<br>this cell is: " + d.variable_name)
+                        }
+                        var mousemove = function(d) {
+                          Tooltip
+
+                          .style("left", (d3.mouse(this)[0]+70) + "px")
+                          .style("top", (d3.mouse(this)[1]) + "px")
+
+                        }
+                        var mouseleave = function(d) {
+                          Tooltip
+                            .style("opacity", 0)
+                          d3.select(this)
+                            .style("stroke", "none")
+                            .style("opacity", 0.8)
+                        }
 
 
   // Add the bars
@@ -72,6 +110,9 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
           .endAngle(d => x(d.variable_name) + x.bandwidth())
           .padAngle(0.01)
           .padRadius(innerRadius))
+          .on("mouseover", mouseover)
+          .on("mousemove", mousemove)
+          .on("mouseleave", mouseleave)
 
   // Add the labels
   svg.append("g")
@@ -99,23 +140,6 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
             .attr("y", function(d) { return -y(d); })
             .attr("dy", "0.35em")
             .text(y.tickFormat(5, "s"));
-
-            /*.on("mouseover", function(event, d) {
-                d3.select("#tooltip")
-                        .style("left", event.pageX + "px")
-                        .style("top", event.pageY + "px")
-                    .select("#value")
-                        // .html("<p>" + String(d[1]) + "</p>"); // access data by indexing array value
-                        .html("<p>" + String(d.single_regression) + "</p>"); // access data by object property
-
-                d3.select("#tooltip")
-                    .classed("hidden", false);
-            })
-            .on("mouseout", function() {
-                d3.select("#tooltip")
-                    .classed("hidden", true);
-            })*/
-
 
 });
 
