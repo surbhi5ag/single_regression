@@ -78,7 +78,7 @@ d3.csv("https://raw.githubusercontent.com/mdcastilloc/bigdata_2021/main/single_r
                       var mouseover = function(event, d) {
                         Tooltip
                           .style("opacity", 1)
-                          .html("The exact value of<br>this cell is: " + d.variable_name)
+                          .html("The strength of the association between " + variable_name + "and the intention migrate externally is " + strength + ". p-value : " + p_val)
                         d3.select(this)
                           .style("stroke", "black")
                           .style("opacity", 1)
